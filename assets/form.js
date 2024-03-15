@@ -54,13 +54,13 @@ function generateDropdownList() {
 }
 function createForm() {
   // create all elements
-  const form = $('<form>');
+  const form = $('<form class="d-flex flex-column gap-2">');
   const headingEl = $('<h1>');
   const input = $(
     '<input type="text" class="form-control" placeholder="Search!">'
   );
   const dropdown = $('<select class="form-select">');
-  const submit = $('<button type="submit" class="btn btn-primary">');
+  const submit = $('<button type="submit" class="btn btn-success">');
 
   // build elements
   headingEl.text('Library of Congress Search Engine');
