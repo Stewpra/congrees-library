@@ -5,7 +5,7 @@ function generateDropdownList() {
   const dropdownOptions = [
     {
       value: 'audio',
-      display: 'AudioRecordings',
+      display: 'Audio Recordings',
     },
     {
       value: 'books',
