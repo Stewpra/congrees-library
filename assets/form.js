@@ -56,7 +56,9 @@ function createForm() {
   // create all elements
   const form = $('<form>');
   const headingEl = $('<h1>');
-  const input = $('<input type="text" class="form-control" >');
+  const input = $(
+    '<input type="text" class="form-control" placeholder="Search!">'
+  );
   const dropdown = $('<select class="form-select">');
   const submit = $('<button type="submit" class="btn btn-primary">');
 
@@ -66,7 +68,7 @@ function createForm() {
   submit.text('Click Me');
 
   //place all elements
-  form.append(headingEl).append(dropdown).append(submit);
+  form.append(headingEl).append(input).append(dropdown).append(submit);
 
   formContainer.append(form);
 }
