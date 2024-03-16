@@ -151,7 +151,11 @@ $(document).ready(function () {
   // on runs handleSubmit function when form is submitted
   formEls.form.on('submit', (e) => handleSubmit(e, formEls));
   const params = initFetch();
-  resultsHeading.text(params.search);
   const data = fetchData(params);
+  const resultsPageHeading =
+    params.search.charAt(0).toUpperCase() +
+    params.search.slice(1).toLowerCase();
+  resultsHeading.text(resultsPageHeading);
+
   createCards(data);
 });
