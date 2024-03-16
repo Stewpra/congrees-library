@@ -1,49 +1,50 @@
 // get references needed for form logic
-const formContainer = $("#form-container");
+const formContainer = $('#form-container');
+const container = $('#results-container'); // Use jQuery to select the container
 
 function generateDropdownList() {
   // init array of dropdown options
   // loop through later to create dropdown
   const dropdownOptions = [
     {
-      value: "audio",
-      display: "Audio Recordings",
+      value: 'audio',
+      display: 'Audio Recordings',
     },
     {
-      value: "books",
-      display: "Books/PrintedMaterial",
+      value: 'books',
+      display: 'Books/PrintedMaterial',
     },
     {
-      value: "film-and-videos",
-      display: "Film, Videos",
+      value: 'film-and-videos',
+      display: 'Film, Videos',
     },
     {
-      value: "legislation",
-      display: "Legislation",
+      value: 'legislation',
+      display: 'Legislation',
     },
     {
-      value: "manuscripts",
-      display: "Manuscripts/Mixed Material",
+      value: 'manuscripts',
+      display: 'Manuscripts/Mixed Material',
     },
     {
-      value: "maps",
-      display: "Maps",
+      value: 'maps',
+      display: 'Maps',
     },
     {
-      value: "newspapers",
-      display: "Newspapers",
+      value: 'newspapers',
+      display: 'Newspapers',
     },
     {
-      value: "photos",
-      display: "Photos, Print, Drawings",
+      value: 'photos',
+      display: 'Photos, Print, Drawings',
     },
     {
-      value: "notated-music",
-      display: "Printed Music (such as sheet music)",
+      value: 'notated-music',
+      display: 'Printed Music (such as sheet music)',
     },
     {
-      value: "web-archive",
-      display: "Web Archives",
+      value: 'web-archive',
+      display: 'Web Archives',
     },
   ];
 
@@ -67,7 +68,7 @@ function generateDropdownList() {
 function createForm() {
   // create all elements
   const form = $('<form class="d-flex flex-column gap-2">');
-  const headingEl = $("<h1>");
+  const headingEl = $('<h1>');
   const inputEl = $(
     '<input type="text" class="form-control" placeholder="Search!">'
   );
@@ -75,9 +76,9 @@ function createForm() {
   const submitEl = $('<button type="submit" class="btn btn-success">');
 
   // build elements
-  headingEl.text("Library of Congress Search Engine");
+  headingEl.text('Library of Congress Search Engine');
   dropdownEl.html(generateDropdownList()); // we call the generateDropdownList function here. Since it returned an array of <option> elements, we can apply it to the html directly here
-  submitEl.text("Click Me");
+  submitEl.text('Click Me');
 
   //place all elements
   form.append(headingEl).append(inputEl).append(dropdownEl).append(submitEl);
@@ -88,13 +89,14 @@ function createForm() {
   return { form, inputEl, dropdownEl, submitEl };
 }
 
-async function fetchData({ inputEl, dropdownEl }) {
+async function fetchData({ format, search }) {
   // create url with form values
-  const url = `https://www.loc.gov/${dropdownEl.val()}/?q=${inputEl.val()}&fo=json`;
+  const url = `https://www.loc.gov/${format}/?q=${search}&fo=json`;
   try {
     // fetch data
     const res = await fetch(url);
     const data = await res.json();
+    console.log(data);
     // loop through array and create new array of necessary data
     const articlesArray = data.content.results.map((article) => {
       // return object to map with necessary data
@@ -105,23 +107,16 @@ async function fetchData({ inputEl, dropdownEl }) {
         // description might be undefined, if undefined return 'no description...'
         description: article.description
           ? article.description
-          : ["No description for this entry."],
+          : ['No description for this entry.'],
         button: article.id,
       };
     });
 
-    const container = $("#results-container"); // Use jQuery to select the container
     container.empty(); // Clear the container before appending new cards
-
-    articlesArray.forEach((article) => {
-      const card = createCardElement(article);
-      container.append(card); // Use jQuery to append the card element to the container
-    });
-
+    return articlesArray;
     // need title, date, subject, description
   } catch (error) {
     console.error(error);
-  } 
   }
 }
 
@@ -140,11 +135,22 @@ function handleSubmit(e, { inputEl, dropdownEl }) {
   // fetchData({ inputEl, dropdownEl });
 }
 
+function initFetch() {
+  const currentUrl = location.search;
+  const searchParams = new URLSearchParams(currentUrl);
+  const format = searchParams.get('format');
+  const search = searchParams.get('search?query');
+  return { format, search };
+}
+
 // this function runs when the document is ready for dom manipulation
 $(document).ready(function () {
   // eg. formEls = { form: form, inputEl: inputEl, dropdownEl: drop...}
   const formEls = createForm();
 
   // on runs handleSubmit function when form is submitted
-  formEls.form.on("submit", (e) => handleSubmit(e, formEls));
+  formEls.form.on('submit', (e) => handleSubmit(e, formEls));
+
+  const data = fetchData(initFetch());
+  createCards(data);
 });
