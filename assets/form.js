@@ -111,12 +111,6 @@ async function fetchData({ inputEl, dropdownEl }) {
     // need title, date, subject, description
   } catch (error) {
     console.error(error);
-  } finally {
-    if (window.location.pathname !== '/results.html') {
-      window.location.href = './results.html';
-    } else {
-      inputEl.val('');
-    }
   }
 }
 function handleSubmit(e, { inputEl, dropdownEl }) {
@@ -126,7 +120,13 @@ function handleSubmit(e, { inputEl, dropdownEl }) {
   // we can get access to the elements here, as well as their value like so
   // console.log(inputEl, inputEl.val());
   // console.log(dropdownEl, dropdownEl.val());
-  fetchData({ inputEl, dropdownEl });
+  if (location.pathname === '/index.html') {
+    location.assign(
+      `./results.html?format=${dropdownEl.val()}&search?query=${inputEl.val()}`
+    );
+  } else {
+    fetchData({ inputEl, dropdownEl });
+  }
 }
 
 // this function runs when the document is ready for dom manipulation
