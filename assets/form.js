@@ -112,7 +112,11 @@ async function fetchData({ inputEl, dropdownEl }) {
   } catch (error) {
     console.error(error);
   } finally {
-    inputEl.val('');
+    if (window.location.pathname !== '/results.html') {
+      window.location.href = './results.html';
+    } else {
+      inputEl.val('');
+    }
   }
 }
 function handleSubmit(e, { inputEl, dropdownEl }) {
