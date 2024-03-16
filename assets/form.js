@@ -88,13 +88,41 @@ function createForm() {
   return { form, inputEl, dropdownEl, submitEl };
 }
 
+async function fetchData({ inputEl, dropdownEl }) {
+  // create url with form values
+  const url = `https://www.loc.gov/${dropdownEl.val()}/?q=${inputEl.val()}&fo=json`;
+  try {
+    // fetch data
+    const res = await fetch(url);
+    const data = await res.json();
+    // loop through array and create new array of necessary data
+    const articlesArray = data.content.results.map((article) => {
+      // return object to map with necessary data
+      return {
+        title: article.title,
+        date: article.date,
+        subject: article.subject,
+        // description might be undefined, if undefined return 'no description...'
+        description: article.description
+          ? article.description
+          : ['No description for this entry.'],
+      };
+    });
+    // need title, date, subject, description
+  } catch (error) {
+    console.error(error);
+  } finally {
+    inputEl.val('');
+  }
+}
 function handleSubmit(e, { inputEl, dropdownEl }) {
   // prevent auto refresh on form submit
   e.preventDefault();
 
   // we can get access to the elements here, as well as their value like so
-  console.log(inputEl, inputEl.val());
-  console.log(dropdownEl, dropdownEl.val());
+  // console.log(inputEl, inputEl.val());
+  // console.log(dropdownEl, dropdownEl.val());
+  fetchData({ inputEl, dropdownEl });
 }
 
 // this function runs when the document is ready for dom manipulation
