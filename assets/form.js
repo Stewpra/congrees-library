@@ -120,13 +120,12 @@ function handleSubmit(e, { inputEl, dropdownEl }) {
   // we can get access to the elements here, as well as their value like so
   // console.log(inputEl, inputEl.val());
   // console.log(dropdownEl, dropdownEl.val());
-  if (location.pathname === '/index.html') {
-    location.assign(
-      `./results.html?format=${dropdownEl.val()}&search?query=${inputEl.val()}`
-    );
-  } else {
-    fetchData({ inputEl, dropdownEl });
-  }
+
+  location.assign(
+    `./results.html?format=${dropdownEl.val()}&search?query=${inputEl.val()}`
+  );
+
+  // fetchData({ inputEl, dropdownEl });
 }
 
 // this function runs when the document is ready for dom manipulation
