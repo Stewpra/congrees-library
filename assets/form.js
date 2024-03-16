@@ -120,6 +120,14 @@ async function fetchData({ format, search }) {
   }
 }
 
+function titleCaseString(str) {
+  const words = str.split(' ');
+  const capWords = words
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+  return capWords;
+}
+
 function handleSubmit(e, { inputEl, dropdownEl }) {
   // prevent auto refresh on form submit
   e.preventDefault();
@@ -152,10 +160,8 @@ $(document).ready(function () {
   formEls.form.on('submit', (e) => handleSubmit(e, formEls));
   const params = initFetch();
   const data = fetchData(params);
-  const resultsPageHeading =
-    params.search.charAt(0).toUpperCase() +
-    params.search.slice(1).toLowerCase();
-  resultsHeading.text(resultsPageHeading);
+
+  resultsHeading.text(titleCaseString(params.search));
 
   createCards(data);
 });
