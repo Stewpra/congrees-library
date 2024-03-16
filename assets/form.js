@@ -1,6 +1,6 @@
 // get references needed for form logic
 const formContainer = $('#form-container');
-const container = $('#results-container'); // Use jQuery to select the container
+const resultsHeading = $('#results-heading');
 
 function generateDropdownList() {
   // init array of dropdown options
@@ -150,7 +150,8 @@ $(document).ready(function () {
 
   // on runs handleSubmit function when form is submitted
   formEls.form.on('submit', (e) => handleSubmit(e, formEls));
-
-  const data = fetchData(initFetch());
+  const params = initFetch();
+  resultsHeading.text(params.search);
+  const data = fetchData(params);
   createCards(data);
 });
