@@ -1,50 +1,50 @@
 // get references needed for form logic
-const formContainer = $('#form-container');
-const resultsHeading = $('#results-heading');
+const formContainer = $("#form-container");
+const resultsHeading = $("#results-heading");
 
 function generateDropdownList() {
   // init array of dropdown options
   // loop through later to create dropdown
   const dropdownOptions = [
     {
-      value: 'audio',
-      display: 'Audio Recordings',
+      value: "audio",
+      display: "Audio Recordings",
     },
     {
-      value: 'books',
-      display: 'Books/PrintedMaterial',
+      value: "books",
+      display: "Books/PrintedMaterial",
     },
     {
-      value: 'film-and-videos',
-      display: 'Film, Videos',
+      value: "film-and-videos",
+      display: "Film, Videos",
     },
     {
-      value: 'legislation',
-      display: 'Legislation',
+      value: "legislation",
+      display: "Legislation",
     },
     {
-      value: 'manuscripts',
-      display: 'Manuscripts/Mixed Material',
+      value: "manuscripts",
+      display: "Manuscripts/Mixed Material",
     },
     {
-      value: 'maps',
-      display: 'Maps',
+      value: "maps",
+      display: "Maps",
     },
     {
-      value: 'newspapers',
-      display: 'Newspapers',
+      value: "newspapers",
+      display: "Newspapers",
     },
     {
-      value: 'photos',
-      display: 'Photos, Print, Drawings',
+      value: "photos",
+      display: "Photos, Print, Drawings",
     },
     {
-      value: 'notated-music',
-      display: 'Printed Music (such as sheet music)',
+      value: "notated-music",
+      display: "Printed Music (such as sheet music)",
     },
     {
-      value: 'web-archive',
-      display: 'Web Archives',
+      value: "web-archive",
+      display: "Web Archives",
     },
   ];
 
@@ -68,7 +68,7 @@ function generateDropdownList() {
 function createForm() {
   // create all elements
   const form = $('<form class="d-flex flex-column gap-2">');
-  const headingEl = $('<h1>');
+  const headingEl = $("<h1>");
   const inputEl = $(
     '<input type="text" class="form-control" placeholder="Search!">'
   );
@@ -76,9 +76,9 @@ function createForm() {
   const submitEl = $('<button type="submit" class="btn btn-success">');
 
   // build elements
-  headingEl.text('Library of Congress Search Engine');
+  headingEl.text("Library of Congress Search Engine");
   dropdownEl.html(generateDropdownList()); // we call the generateDropdownList function here. Since it returned an array of <option> elements, we can apply it to the html directly here
-  submitEl.text('Click Me');
+  submitEl.text("Click Me");
 
   //place all elements
   form.append(headingEl).append(inputEl).append(dropdownEl).append(submitEl);
@@ -107,7 +107,7 @@ async function fetchData({ format, search }) {
         // description might be undefined, if undefined return 'no description...'
         description: article.description
           ? article.description
-          : ['No description for this entry.'],
+          : ["No description for this entry."],
         button: article.id,
       };
     });
@@ -116,6 +116,7 @@ async function fetchData({ format, search }) {
     return articlesArray;
     // need title, date, subject, description
   } catch (error) {
+    resultsHeading.text("Error");
     console.error(error);
   }
 }
@@ -138,8 +139,8 @@ function handleSubmit(e, { inputEl, dropdownEl }) {
 function initFetch() {
   const currentUrl = location.search;
   const searchParams = new URLSearchParams(currentUrl);
-  const format = searchParams.get('format');
-  const search = searchParams.get('search?query');
+  const format = searchParams.get("format");
+  const search = searchParams.get("search?query");
   return { format, search };
 }
 
@@ -149,7 +150,7 @@ $(document).ready(function () {
   const formEls = createForm();
 
   // on runs handleSubmit function when form is submitted
-  formEls.form.on('submit', (e) => handleSubmit(e, formEls));
+  formEls.form.on("submit", (e) => handleSubmit(e, formEls));
   const params = initFetch();
   resultsHeading.text(params.search);
   const data = fetchData(params);
