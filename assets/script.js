@@ -3,6 +3,7 @@ const container = $('#results-container'); // Use jQuery to select the container
 // Function to create a card element
 function createCardElement({ title, date, subject, description, button }) {
   const card = $('<div class="card col-12 p-2">');
+  // subject may be undefined
   const formattedSubject = subject.join(', ');
   card.html(`
       <h2>${title}</h2>
