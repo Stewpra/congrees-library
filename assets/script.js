@@ -1,4 +1,5 @@
 const container = $('#results-container'); // Use jQuery to select the container
+const spacer = $('#content-spacer');
 
 // Function to create a card element
 function createCardElement({ title, date, subject, description, button }) {
@@ -38,6 +39,7 @@ async function createCards(data) {
     articlesData.forEach((article) => {
       const card = createCardElement(article);
       container.append(card); // Use jQuery to append the card element to the container
+      spacer.remove();
     });
   } catch (err) {
     console.error(err);
