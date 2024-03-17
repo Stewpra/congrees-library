@@ -7,16 +7,25 @@ function createCardElement({ title, date, subject, description, button }) {
   console.log(button);
   const formattedSubject = subject && subject.join(', ');
   card.html(`
-  <div class='card-body'>
-      <h5 class='card=title'>${title ? title : 'Entry has no title'}</h5>
-      <h6 class='card-subtitle mb-2 text-body-secondary'>Date: ${
+  <div class='card-body d-flex flex-column gap-2'>
+  <div>
+      <h4 class='card=title'>${title ? title : 'Entry has no title'}</h4>
+      <h5 class='card-subtitle mb-2 text-body-secondary'>Date: ${
         date ? date : 'Entry has no date'
-      }</h6>
-      <p>Subjects: ${subject ? formattedSubject : 'Entry has no subject'}</p>
-      <p>Description: ${
+      }</h5>
+      </div>
+      <div>
+      <p class='card-text m-0 fw-semibold border-bottom'>Subjects</p>
+      <p class='card-text m-0'>${
+        subject ? formattedSubject : 'Entry has no subject'
+      }</p></div>
+      <div>
+      <p class='card-text m-0 fw-semibold border-bottom'>Description</p>
+      <p class='card-text m-0'>${
         description ? description : 'Entry has no description'
       }</p>
-      <a href="${button}" class="btn btn-success" role='button'>Read More</a>
+      </div>
+      <a href="${button}" class="btn btn-success w-25 align-self-end" role='button'>Read More</a>
       </div>
     `);
 
